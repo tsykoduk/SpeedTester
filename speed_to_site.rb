@@ -34,19 +34,19 @@ class SpeedTest < Thor
     	a << b.split[1].split("=")[1].to_f
     end
 
-    avg_a = a.inject(0){|sum,x| sum + x } / runs
+    avg_a = a.inject(0){|sum,x| sum + x } / runs * 1000
     a.sort!
-    perc99_a = a.value_from_percentile(99)
-    perc95_a = a.value_from_percentile(95)
+    perc99_a = a.value_from_percentile(99) * 1000
+    perc95_a = a.value_from_percentile(95) * 1000
     if perc99_a.nil?
-      perc99_a = a.last
+      perc99_a = a.last * 1000
     end
 
     if perc95_a.nil?
-      perc95_a = a.last
+      perc95_a = a.last * 1000
     end
 
-    puts "Over the #{runs} tests, the average time was #{avg_a}, the perc95 was #{perc95_a} and the perc99 was #{perc99_a}."
+    puts "Over the #{runs} tests, the average time was #{avg_a.to_i}ms, the perc95 was #{perc95_a.to_i}ms and the perc99 was #{perc99_a.to_i}ms."
   end
 end
 
