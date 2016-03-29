@@ -11,8 +11,8 @@ Give start a URL and --runs a number of times to run the test. It will output th
 
 ***Example***
 
-`~/Code/speed_to_site ☯ ruby ./speed_to_site.rb start http://greg.nokes.name --runs 100
-checking speed to http://greg.nokes.name
-I will test the speed 100 times
-Over the 100 test, the average time was 0.8724200000000003, the perc95 was 0.933 and the perc99 was 1.391.`
+	~/Code/speed_to_site ☯ ruby ./speed_to_site.rb start http://greg.nokes.name --runs 100
+	checking speed to http://greg.nokes.name
+	I will test the speed 100 times
+	Over the 100 test, the average time was 0.8724200000000003, the perc95 was 0.933 and the perc99 was 1.391.
 
