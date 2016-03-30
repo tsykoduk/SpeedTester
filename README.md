@@ -15,4 +15,8 @@ Give start a URL and --runs a number of times to run the test. It will output th
 	checking speed to http://greg.nokes.name
 	I will test the speed 100 times
 	Over the 100 tests, the average time was 890ms, the perc95 was 949ms and the perc99 was 1978ms.
+	
+***Output***
+
+The program will output details to the `out.txt` file. This file is truncated on each run.
 
