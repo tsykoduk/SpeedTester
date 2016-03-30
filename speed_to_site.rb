@@ -31,7 +31,7 @@ class SpeedTest < Thor
     puts "I will test the speed #{runs} times"
 
     runs.times do
-    	b = `curl -sSLw \"%{http_code} total_time=%{time_total} time_connect=%{time_connect} time_start=%{time_starttransfer} %{url_effective}\\n\" #{target} -o /dev/null`
+    	b = `curl -sSLw \"http_code=%{http_code} total_time=%{time_total} time_connect=%{time_connect} time_start=%{time_starttransfer} %{url_effective}\\n\" #{target} -o /dev/null`
     	a << b.split[1].split("=")[1].to_f
       File.open("out.txt", 'a') {|f|
         f.puts b
