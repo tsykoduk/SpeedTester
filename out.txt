@@ -1,0 +1,3 @@
+Start of run
+http_code=200 total_time=1.109 time_connect=0.626 time_start=1.109 https://gn-example-stage.herokuapp.com/
+http_code=200 total_time=0.614 time_connect=0.104 time_start=0.602 https://gn-example-stage.herokuapp.com/
