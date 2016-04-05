@@ -23,8 +23,8 @@ class SpeedTest < Thor
   def start(args)
     target = args
     runs = options[:runs]
-    a = []
-    c = []
+    req_time = []
+    router_est = []
     File.open("out.txt", 'w') {|f|
       f.puts "Start of run"
     }
@@ -34,8 +34,8 @@ class SpeedTest < Thor
     
     runs.times do
     	b = `curl -sSLw \"http_code=%{http_code} total_time=%{time_total} time_connect=%{time_connect} time_start=%{time_starttransfer} %{url_effective}\\n\" #{target} -o /dev/null`
-    	a << b.split[1].split("=")[1].to_f
-      c << b.split[1].split("=")[1].to_f - b.split[3].split("=")[1].to_f
+    	req_time << b.split[1].split("=")[1].to_f
+      router_est << b.split[1].split("=")[1].to_f - b.split[3].split("=")[1].to_f
       File.open("out.txt", 'a') {|f|
         f.puts b
       }
@@ -44,30 +44,36 @@ class SpeedTest < Thor
       puts b
     end
   
-    avg_c = c.inject(0){|sum,x| sum + x } / runs * 1000
-    avg_a = a.inject(0){|sum,x| sum + x } / runs * 1000
-    a.sort!
-    perc99_a = a.value_from_percentile(99)
-    perc95_a = a.value_from_percentile(95)
-    if perc99_a.nil?
-      perc99_a = a.last * 1000
-    else
-      perc99_a = perc99_a * 1000
-    end
+    avg_router_est = router_est.inject(0){|sum,x| sum + x } / runs * 1000
+    avg_req_time = req_time.inject(0){|sum,x| sum + x } / runs * 1000
 
-    if perc95_a.nil?
-      perc95_a = a.last * 1000
-    else
-      perc95_a = perc95_a * 1000
-    end
+    perc99_router_est = check_for_nil(router_est.value_from_percentile(99), router_est)
+    perc95_router_est = check_for_nil(router_est.value_from_percentile(95), router_est)
+    perc99_req_time = check_for_nil(req_time.value_from_percentile(99), req_time)
+    perc95_req_time = check_for_nil(req_time.value_from_percentile(95), req_time)
     
-    results = "Over the #{runs} tests, the average time was #{avg_a.to_i}ms, the perc95 was #{perc95_a.to_i}ms and the perc99 was #{perc99_a.to_i}ms. The average time in the router was #{avg_c.to_i}"
+    
+
+    
+    results = "Over the #{runs} tests, the average time was #{avg_req_time.to_i}ms, the perc95 was #{perc95_req_time.to_i}ms and the perc99 was #{perc99_req_time.to_i}ms. The average time in the router was #{avg_router_est.round(1)}ms, the perc95 was #{perc95_router_est.round(1)}ms and the perc99 was #{perc99_router_est.round(1)}ms"
     
    File.open("out.txt",'a') {|f| 
      f.puts results
    }
     puts "\r" + results + " Detailed output is in file out.txt"
   end
+  
+  no_commands {
+  def check_for_nil(check, set)
+    set.sort!
+    if check.nil?
+      return set.last * 1000
+    else
+      return check * 1000
+    end
+  end
+}
+  
 end
 
 SpeedTest.start
