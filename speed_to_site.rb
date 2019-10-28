@@ -55,15 +55,15 @@ class SpeedTest < Thor
     
 
     
-    results = "Over the #{runs} tests, the average time was #{avg_req_time.to_i}ms, the perc95 was #{perc95_req_time.to_i}ms and the perc99 was #{perc99_req_time.to_i}ms."  
+    results = "Over #{runs} tests, the average time was #{avg_req_time.to_i}ms, the perc95 was #{perc95_req_time.to_i}ms and the perc99 was #{perc99_req_time.to_i}ms."  
     
-    ## Router times are not accurate - shelving for now.
+    ## Router times are not suspect. Use at your own risk\
     #The average time in the router was #{avg_router_est.round(1)}ms, the perc95 was #{perc95_router_est.round(1)}ms and the perc99 was #{perc99_router_est.round(1)}ms"
     
    File.open("out.txt",'a') {|f| 
      f.puts results
    }
-    puts "\r" + results + " Detailed output is in file out.txt"
+    puts "\r\n\n" + results + " Detailed output is in file out.txt\n\n"
   end
   
   no_commands {
